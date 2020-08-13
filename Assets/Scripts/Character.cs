@@ -39,6 +39,18 @@ public class Character : MonoBehaviour
             rigidBody2D.AddForce(new Vector2(0.0f, jumpForce), ForceMode2D.Impulse);
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.GetComponent<MovingPlatform>() != null)
+            transform.SetParent(collision.transform);
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.transform.GetComponent<MovingPlatform>() != null)
+            transform.SetParent(null);
+    }
+
     // Update is called once per frame
     void Update()
     {
