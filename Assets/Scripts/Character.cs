@@ -5,7 +5,9 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     public Transform visual;
+    public GameObject bloodStream;
     public float moveForce;
+    public float jumpForce;
 
     Rigidbody2D rigidBody2D;
     TriggerDetector triggerDetector;
@@ -23,14 +25,18 @@ public class Character : MonoBehaviour
 
     public void MoveLeft()
     {
-        if (triggerDetector.inTrigger)
-            rigidBody2D.AddForce(new Vector2(-moveForce, 0.0f), ForceMode2D.Impulse);
+        rigidBody2D.AddForce(new Vector2(-moveForce, 0.0f), ForceMode2D.Impulse);
     }
 
     public void MoveRight()
     {
+        rigidBody2D.AddForce(new Vector2(moveForce, 0.0f), ForceMode2D.Impulse);
+    }
+
+    public void Jump()
+    {
         if (triggerDetector.inTrigger)
-            rigidBody2D.AddForce(new Vector2(moveForce, 0.0f), ForceMode2D.Impulse);
+            rigidBody2D.AddForce(new Vector2(0.0f, jumpForce), ForceMode2D.Impulse);
     }
 
     // Update is called once per frame
@@ -38,9 +44,9 @@ public class Character : MonoBehaviour
     {
         float velocity = rigidBody2D.velocity.x;
 
-        if (velocity < -0.01f) {
+        if (velocity < -0.1f) {
             visualDirection = -1.0f;
-        } else if (velocity > 0.01f) {
+        } else if (velocity > 0.1f) {
             visualDirection = 1.0f;
         }
 
