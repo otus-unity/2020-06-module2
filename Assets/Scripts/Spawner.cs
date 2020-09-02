@@ -1,25 +1,34 @@
 
-using System.Collections;
-using System.Collections.Generic;
+using Assets.Scripts;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
     public GameObject Prefab;
     public float Delay = 1.0f;
-    float TimeLeft;
+    private float TimeLeft;
 
-    void Start()
+    private void Start()
     {
         TimeLeft = Delay;
     }
 
-    void Update()
+    private void Update()
     {
         TimeLeft -= Time.deltaTime;
-        if (TimeLeft < 0.0f) {
+        if (TimeLeft < 0.0f)
+        {
             TimeLeft = Delay;
-            Instantiate(Prefab, transform.position, transform.rotation);
+            //Instantiate(Prefab, transform.position, transform.rotation);
+
+            //var prefab = Resources.Load<NPCController>("CharacterNPC");
+            var mob = Instantiate(EMob.CharacterNPC.GetPrefab(),
+                transform.position + new Vector3(Random.Range(0, 10), 0),
+                transform.rotation).GetComponent<NPCController>();
+
+            if (Random.value > 0.5f)
+                mob.NpcLoigc = new NPCMoveToPlayer();
+            else mob.NpcLoigc = new NPCMoveTudaSuda();
         }
     }
 }

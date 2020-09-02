@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Character : MonoBehaviour
 {
+    #region Params
     public Transform visual;
     public GameObject bloodStream;
     public float moveForce;
@@ -15,23 +16,28 @@ public class Character : MonoBehaviour
     Animator animator;
     float visualDirection;
     InputAction moveAction;
-    bool jumpPressed;
+    bool jumpPressed; 
 
-    // Start is called before the first frame update
-    void Start()
+    public static Character I { get;private set; }
+    #endregion
+
+    public virtual void Start()
+    {
+        I = this;
+        InitComponents();
+        var playerInput = GetComponent<PlayerInput>();
+        moveAction = playerInput.actions["Move"];
+        InputAction jumpAction = playerInput.actions["Jump"];
+        jumpAction.performed += (context) => { jumpPressed = true; };
+        jumpAction.canceled += (context) => { jumpPressed = false; };
+    }
+
+    protected void InitComponents()
     {
         visualDirection = 1.0f;
         rigidBody2D = GetComponent<Rigidbody2D>();
         triggerDetector = GetComponentInChildren<TriggerDetector>();
         animator = GetComponentInChildren<Animator>();
-
-        var playerInput = GetComponent<PlayerInput>();
-
-        moveAction = playerInput.actions["Move"];
-
-        InputAction jumpAction = playerInput.actions["Jump"];
-        jumpAction.performed += (context) => { jumpPressed = true; };
-        jumpAction.canceled += (context) => { jumpPressed = false; };
     }
 
     /*
