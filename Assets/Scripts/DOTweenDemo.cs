@@ -7,7 +7,7 @@ public class DOTweenDemo : MonoBehaviour
 {
     public float variable;
     public AnimationCurve curve;
-    Tween tween;
+    Tween tween = default;
 
     // Start is called before the first frame update
     void Start()
@@ -51,11 +51,5 @@ public class DOTweenDemo : MonoBehaviour
     IEnumerator Coroutine()
     {
         yield return tween.WaitForCompletion();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
