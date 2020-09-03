@@ -5,6 +5,11 @@ using UnityEngine.Tilemaps;
 
 public class PredefinedBlock : MonoBehaviour
 {
+    public const int BitmaskLeft = 1; // 0001
+    public const int BitmaskRight = 2; // 0010
+    public const int BitmaskUp = 4; // 0100
+    public const int BitmaskDown = 8; // 1000
+
     const int X = -5;
     const int Y = -3;
     public const int Width = 12;
@@ -20,6 +25,20 @@ public class PredefinedBlock : MonoBehaviour
     void Awake()
     {
         gameObject.SetActive(false);
+    }
+
+    public int GetBitmask()
+    {
+        int result = 0;
+        if (left)
+            result |= BitmaskLeft;
+        if (right)
+            result |= BitmaskRight;
+        if (up)
+            result |= BitmaskUp;
+        if (down)
+            result |= BitmaskDown;
+        return result;
     }
 
     public Vector3 GetPlayerPosition()

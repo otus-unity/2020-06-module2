@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public abstract class AbstractGenerator : MonoBehaviour
 {
     public Tilemap tilemap;
@@ -17,7 +21,19 @@ public abstract class AbstractGenerator : MonoBehaviour
 
     protected void Apply()
     {
+#if UNITY_EDITOR
+        if (!Application.IsPlaying(this)) {
+            Undo.RecordObject(tilemap, "Procedural Generation");
+            PrefabUtility.RecordPrefabInstancePropertyModifications(tilemap);
+        }
+#endif
+
         map.ApplyToTilemap(tilemap, tileData, Vector2Int.zero, map.rect);
+
+#if UNITY_EDITOR
+        if (!Application.IsPlaying(this))
+            EditorUtility.SetDirty(tilemap);
+#endif
     }
 
     [ContextMenu("Generate")]
